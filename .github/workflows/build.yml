@@ -7,10 +7,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+
+    timeout-minutes: 5
+
     env:
       RUST_BACKTRACE: full
       RUST_LOG: debug
+
+    strategy:
+      fail-fast: false
+      matrix:
+        features:
+          - ""
+          - --features ext_serde
+          - --all-features
+
     steps:
       - uses: actions/checkout@v2
 
@@ -23,9 +34,10 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: cargo-${{ runner.os }}-${{ hashFiles('./Cargo.toml', './Cargo.lock') }}
+          key: cargo-${{ runner.os }}-${{ hashFiles('./Cargo.toml', './Cargo.lock') }}-${{ matrix.features }}
           restore-keys: |
+            cargo-${{ runner.os }}-${{ hashFiles('./Cargo.toml', './Cargo.lock') }}-
             cargo-${{ runner.os }}-
 
       - name: Test
-        run: cargo test
+        run: cargo test ${{ matrix.features }}

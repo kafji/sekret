@@ -56,3 +56,32 @@ impl<T> Secret<T> {
         self.0
     }
 }
+
+#[cfg(feature = "ext_serde")]
+impl<'de, T> serde::Deserialize<'de> for Secret<T>
+where
+    T: serde::Deserialize<'de>,
+{
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let v = T::deserialize(deserializer)?;
+        let s = Secret(v);
+        Ok(s)
+    }
+}
+
+#[cfg(feature = "ext_serde")]
+impl<T> serde::Serialize for Secret<T>
+where
+    T: serde::Serialize,
+{
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        let v = T::serialize(&self.0, serializer)?;
+        Ok(v)
+    }
+}
