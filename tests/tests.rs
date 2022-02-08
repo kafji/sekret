@@ -31,3 +31,8 @@ fn test_secret_is_serializable() {
     let serialized = serde_json::to_value(&Secret("sekret")).unwrap();
     assert!(matches!(serialized, serde_json::Value::String(x) if x == "sekret"));
 }
+
+#[test]
+fn test_into() {
+    let _: Secret<&str> = "sekret".into();
+}
