@@ -10,3 +10,9 @@ println!("Secret token is: `{token}`.");
 ```
 Secret token is: `█████`.
 ```
+
+## Install
+
+```toml
+sekret = { git = "https://github.com/kafji/sekret", tag = "v0.1.1", features = ["ext_serde"] }
+```
