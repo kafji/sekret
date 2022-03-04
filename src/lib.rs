@@ -52,7 +52,7 @@ impl<T> Secret<T> {
     }
 
     /// Unwrap `Secret` returning the contained value.
-    pub fn unwrap(self) -> T {
+    pub fn into_inner(self) -> T {
         self.0
     }
 }
