@@ -9,13 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     timeout-minutes: 5
-
     env:
       RUST_BACKTRACE: full
       RUST_LOG: debug
-
     strategy:
       fail-fast: false
       matrix:
@@ -23,7 +20,6 @@ jobs:
           - ""
           - --features ext_serde
           - --all-features
-
     steps:
       - uses: actions/checkout@v3
 
